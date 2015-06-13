@@ -30,7 +30,8 @@ function create(text) {
   _todos[id] = {
     id: id,
     complete: false,
-    text: text
+    text: text,
+    textCase: 0
   };
 }
 
@@ -73,6 +74,11 @@ function destroyCompleted() {
     if (_todos[id].complete) {
       destroy(id);
     }
+  }
+}
+
+function toggleCase(id) {
+
   }
 }
 
@@ -165,6 +171,11 @@ AppDispatcher.register(function(action) {
 
     case TodoConstants.TODO_DESTROY_COMPLETED:
       destroyCompleted();
+      TodoStore.emitChange();
+      break;
+
+    case TodoConstants.TODO_TOGGLE_CASE:
+      toggleCase(action.id);
       TodoStore.emitChange();
       break;
 
