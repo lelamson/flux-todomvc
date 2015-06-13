@@ -30,7 +30,8 @@ function create(text) {
   _todos[id] = {
     id: id,
     complete: false,
-    text: text
+    text: text,
+    textCase: 0
   };
 }
 
@@ -73,6 +74,22 @@ function destroyCompleted() {
     if (_todos[id].complete) {
       destroy(id);
     }
+  }
+}
+
+function toggleCase(id) {
+  var todo = _todos[id];
+  if(todo.textCase%3 === 0) {
+    todo.text = todo.text.toLowerCase();
+    todo.textCase++;
+  } else if (todo.textCase%3 === 1) {
+    todo.text = todo.text.toUpperCase();
+    todo.textCase++;
+  } else {
+    todo.text = todo.text.split(' ').map(function(word) {
+      return word.charAt(0).toUpperCase() + word.substring(1).toLowerCase();
+    }).join(' ');
+    todo.textCase++;
   }
 }
 
@@ -165,6 +182,11 @@ AppDispatcher.register(function(action) {
 
     case TodoConstants.TODO_DESTROY_COMPLETED:
       destroyCompleted();
+      TodoStore.emitChange();
+      break;
+
+    case TodoConstants.TODO_TOGGLE_CASE:
+      toggleCase(action.id);
       TodoStore.emitChange();
       break;
 
