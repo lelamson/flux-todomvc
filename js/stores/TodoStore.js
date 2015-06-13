@@ -78,7 +78,18 @@ function destroyCompleted() {
 }
 
 function toggleCase(id) {
-
+  var todo = _todos[id];
+  if(todo.textCase%3 === 0) {
+    todo.text = todo.text.toLowerCase();
+    todo.textCase++;
+  } else if (todo.textCase%3 === 1) {
+    todo.text = todo.text.toUpperCase();
+    todo.textCase++;
+  } else {
+    todo.text = todo.text.split(' ').map(function(word) {
+      return word.charAt(0).toUpperCase() + word.substring(1).toLowerCase();
+    }).join(' ');
+    todo.textCase++;
   }
 }
 
